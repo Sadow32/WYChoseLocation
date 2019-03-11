@@ -24,29 +24,16 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="btn_check" translatesAutoresizingMaskIntoConstraints="NO" id="E6p-yL-597">
-                        <rect key="frame" x="66" y="17" width="22" height="10"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="14" id="dPq-uL-lMG"/>
-                            <constraint firstAttribute="height" constant="10" id="md6-nU-wj9"/>
-                        </constraints>
-                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="HWS-WJ-BA2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="RF3-Tc-fKC"/>
-                    <constraint firstItem="E6p-yL-597" firstAttribute="leading" secondItem="HWS-WJ-BA2" secondAttribute="trailing" constant="8" id="VPT-uo-nhb"/>
-                    <constraint firstItem="E6p-yL-597" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dwQ-8f-e5J"/>
                     <constraint firstItem="HWS-WJ-BA2" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="uq0-Cx-i3y"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="addressLabel" destination="HWS-WJ-BA2" id="Y1W-OH-GIq"/>
-                <outlet property="selectFlag" destination="E6p-yL-597" id="4fL-76-3cd"/>
             </connections>
-            <point key="canvasLocation" x="471" y="437"/>
+            <point key="canvasLocation" x="-107" y="156"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="btn_check" width="14" height="10"/>
-    </resources>
 </document>

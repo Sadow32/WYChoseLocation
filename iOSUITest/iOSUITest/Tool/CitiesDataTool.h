@@ -28,6 +28,7 @@
  @return 省
  */
 - (NSMutableArray *)queryAllProvince;
+- (ProvinceModel *)queryProvinceWithCode:(NSString *)code;
 
 /**
  根据省查询市
@@ -35,7 +36,8 @@
  @param province 省code
  @return 市
  */
-- (NSMutableArray *)queryAllRecordWithProvinceID:(NSString *)province;
+- (NSMutableArray *)queryAllCitiesWithProvinceID:(NSString *)province;
+- (CityModel *)queryCityWithCode:(NSString *)code;
 
 /**
  根据省\市 查询县区
@@ -44,7 +46,8 @@
  @param city 市
  @return 县区
  */
-- (NSMutableArray *)queryAllRecordWithProvinceID:(NSString *)province cityID:(NSString *)city;
+- (NSMutableArray *)queryAllAreasWithProvinceID:(NSString *)province cityID:(NSString *)city;
+- (AreaModel *)queryAreaWithCode:(NSString *)code;
 
 /**
  根据省\市\县区 查询镇
@@ -54,7 +57,7 @@
  @param area 区
  @return 镇
  */
-- (NSMutableArray *)queryAllRecordWithProvinceID:(NSString *)province cityID:(NSString *)city areaID:(NSString *)area;
-
+- (NSMutableArray *)queryAllStreetsWithProvinceID:(NSString *)province cityID:(NSString *)city areaID:(NSString *)area;
+- (StreetModel *)queryStreetWithCode:(NSString *)code;
 
 @end

@@ -12,29 +12,29 @@
 #import "AddressTableViewCell.h"
 //#import "AddressItem.h"
 #import "CitiesDataTool.h"
+#import "AddressButton.h"
 
 #define HYScreenW [UIScreen mainScreen].bounds.size.width
 
 static  CGFloat  const  kHYTopViewHeight = 40; //顶部视图的高度
-static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
+static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度s
 
 @interface ChooseLocationView ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
-@property (nonatomic,weak) AddressView *topTabbar;
-@property (nonatomic,weak) UIScrollView *contentView;
-@property (nonatomic,weak) UIView *underLine;
-@property (nonatomic,strong) NSArray *provinceDatas;
-@property (nonatomic,strong) NSArray *cityDatas;
-@property (nonatomic,strong) NSArray *areaDatas;
-@property (nonatomic,strong) NSArray *streetDatas;
-@property (nonatomic,strong) NSMutableArray *tableViews;
-@property (nonatomic,strong) NSMutableArray *topTabbarItems;
-@property (nonatomic,weak) UIButton *selectedBtn;
+@property (nonatomic, strong) AddressView *topTabbar;
+@property (nonatomic, weak) UIScrollView *contentView;
+//@property (nonatomic, strong) UIView *underLine;
+@property (nonatomic, strong) NSArray *provinceDatas;
+@property (nonatomic, strong) NSArray *cityDatas;
+@property (nonatomic, strong) NSArray *areaDatas;
+@property (nonatomic, strong) NSArray *streetDatas;
+@property (nonatomic, strong) NSMutableArray *tableViews;
+@property (nonatomic, strong) NSMutableArray *topTabbarItems;
+@property (nonatomic, weak) UIButton *selectedBtn;
 @end
 
 @implementation ChooseLocationView
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self setUp];
@@ -44,11 +44,11 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
 
 #pragma mark - setUp UI
 
-- (void)setUp{
+- (void)setUp {
     
-    UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, kHYTopViewHeight)];
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, kHYTopViewHeight)];
     [self addSubview:topView];
-    UILabel *titleLabel = [[UILabel alloc]init];
+    UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = @"所在地区";
     [titleLabel sizeToFit];
     [topView addSubview:titleLabel];
@@ -58,28 +58,21 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
     [topView addSubview: separateLine];
     separateLine.top = topView.height - separateLine.height;
     topView.backgroundColor = [UIColor whiteColor];
-
     
-    AddressView *topTabbar = [[AddressView alloc]initWithFrame:CGRectMake(0, topView.height, self.frame.size.width, kHYTopViewHeight)];
-    [self addSubview:topTabbar];
-    _topTabbar = topTabbar;
+    _topTabbar = [[AddressView alloc] initWithFrame:CGRectMake(0, topView.height, self.frame.size.width, kHYTopViewHeight)];
+    _topTabbar.backgroundColor = [UIColor whiteColor];
+    [self addSubview:_topTabbar];
     [self addTopBarItem];
-    UIView *separateLine1 = [self separateLine];
-    [topTabbar addSubview: separateLine1];
-    separateLine1.top = topTabbar.height - separateLine.height;
     [_topTabbar layoutIfNeeded];
-    topTabbar.backgroundColor = [UIColor whiteColor];
     
-    UIView *underLine = [[UIView alloc] initWithFrame:CGRectZero];
-    [topTabbar addSubview:underLine];
-    _underLine = underLine;
-    underLine.height = 2.0f;
+//    _underLine = [[UIView alloc] initWithFrame:CGRectZero];
+//    _underLine.frame = CGRectMake(0, kHYTopViewHeight-2, 0, 2);
+//    _underLine.backgroundColor = [UIColor orangeColor];
+//    [_topTabbar addSubview:_underLine];
     UIButton *btn = self.topTabbarItems.lastObject;
     [self changeUnderLineFrame:btn];
-    underLine.top = separateLine1.top - underLine.height;
     
-    _underLine.backgroundColor = [UIColor orangeColor];
-    UIScrollView *contentView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(topTabbar.frame), self.frame.size.width, self.height - kHYTopViewHeight - kHYTopTabbarHeight)];
+    UIScrollView *contentView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_topTabbar.frame), self.frame.size.width, self.height - kHYTopViewHeight - kHYTopTabbarHeight)];
     contentView.contentSize = CGSizeMake(HYScreenW, 0);
     [self addSubview:contentView];
     _contentView = contentView;
@@ -89,12 +82,12 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
     _contentView.delegate = self;
 }
 
+- (void)addTableView {
 
-- (void)addTableView{
-
-    UITableView *tabbleView = [[UITableView alloc]initWithFrame:CGRectMake(self.tableViews.count *HYScreenW, 0, HYScreenW, _contentView.height)];
+    UITableView *tabbleView = [[UITableView alloc] initWithFrame:CGRectMake(self.tableViews.count *HYScreenW, 0, HYScreenW, _contentView.height)];
     [_contentView addSubview:tabbleView];
     [self.tableViews addObject:tabbleView];
+    tabbleView.rowHeight = 44;
     tabbleView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tabbleView.delegate = self;
     tabbleView.dataSource = self;
@@ -102,16 +95,16 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
     [tabbleView registerNib:[UINib nibWithNibName:@"AddressTableViewCell" bundle:nil] forCellReuseIdentifier:@"AddressTableViewCell"];
 }
 
-- (void)addTopBarItem{
+- (void)addTopBarItem {
     
-    UIButton *topBarItem = [UIButton buttonWithType:UIButtonTypeCustom];
+    AddressButton *topBarItem = [AddressButton buttonWithType:UIButtonTypeCustom];
     [topBarItem setTitle:@"请选择" forState:UIControlStateNormal];
     [topBarItem setTitleColor:[UIColor colorWithRed:43/255.0 green:43/255.0 blue:43/255.0 alpha:1] forState:UIControlStateNormal];
     [topBarItem setTitleColor:[UIColor orangeColor] forState:UIControlStateSelected];
     [topBarItem sizeToFit];
-     topBarItem.centerY = _topTabbar.height *0.5;
+    topBarItem.centerY = _topTabbar.height *0.5;
     [self.topTabbarItems addObject:topBarItem];
-    [_topTabbar addSubview:topBarItem];
+    [_topTabbar addButton:topBarItem];
     [topBarItem addTarget:self action:@selector(topBarItemClick:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -155,7 +148,7 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
     if ([self.tableViews indexOfObject:tableView] == 0) {
         //1.1 获取下一级别的数据源(市级别,如果是直辖市时,下级则为区级别)
         ProvinceModel *provinceItem = self.provinceDatas[indexPath.row];
-        self.cityDatas = [[CitiesDataTool sharedManager] queryAllRecordWithProvinceID:provinceItem.code];
+        self.cityDatas = [[CitiesDataTool sharedManager] queryAllCitiesWithProvinceID:provinceItem.code];
         if (self.cityDatas.count == 0) {
             for (int i = 0; i < self.tableViews.count && self.tableViews.count != 1; i++) {
                 [self removeLastItem];
@@ -171,21 +164,23 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
             for (int i = 0; i < tableCounts - 1; i++) {
                 [self removeLastItem];
             }
+            [self setButtonTitle:provinceItem.name];
             [self addTopBarItem];
             [self addTableView];
-            [self scrollToNextItem:provinceItem.name];
+            [self scrollToNextItem];
             return indexPath;
         }
         //之前未选中省，第一次选择省
+        ProvinceModel *item = self.provinceDatas[indexPath.row];
+        [self setButtonTitle:item.name];
         [self addTopBarItem];
         [self addTableView];
-        ProvinceModel *item = self.provinceDatas[indexPath.row];
-        [self scrollToNextItem:item.name];
+        [self scrollToNextItem];
         
     } else if ([self.tableViews indexOfObject:tableView] == 1) {
         
         CityModel *cityItem = self.cityDatas[indexPath.row];
-        self.areaDatas = [[CitiesDataTool sharedManager] queryAllRecordWithProvinceID:cityItem.provinceCode cityID:cityItem.code];
+        self.areaDatas = [[CitiesDataTool sharedManager] queryAllAreasWithProvinceID:cityItem.provinceCode cityID:cityItem.code];
         NSIndexPath *indexPath0 = [tableView indexPathForSelectedRow];
         
         if ([indexPath0 compare:indexPath] != NSOrderedSame && indexPath0) {
@@ -193,26 +188,27 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
             for (int i = 0; i < tableCounts - 2; i++) {
                 [self removeLastItem];
             }
+            [self setButtonTitle:cityItem.name];
             [self addTopBarItem];
             [self addTableView];
-            [self scrollToNextItem:cityItem.name];
+            [self scrollToNextItem];
             return indexPath;
             
         } else if ([indexPath0 compare:indexPath] == NSOrderedSame && indexPath0) {
             
-            [self scrollToNextItem:cityItem.name];
+            [self scrollToNextItem];
             return indexPath;
         }
-        
+        CityModel *item = self.cityDatas[indexPath.row];
+        [self setButtonTitle:item.name];
         [self addTopBarItem];
         [self addTableView];
-        CityModel *item = self.cityDatas[indexPath.row];
-        [self scrollToNextItem:item.name];
+        [self scrollToNextItem];
         
     } else if ([self.tableViews indexOfObject:tableView] == 2) {
         
         AreaModel *areaItem = self.areaDatas[indexPath.row];
-        self.streetDatas = [[CitiesDataTool sharedManager] queryAllRecordWithProvinceID:areaItem.provinceCode cityID:areaItem.cityCode areaID:areaItem.code];
+        self.streetDatas = [[CitiesDataTool sharedManager] queryAllStreetsWithProvinceID:areaItem.provinceCode cityID:areaItem.cityCode areaID:areaItem.code];
         NSIndexPath *indexPath0 = [tableView indexPathForSelectedRow];
         
         if ([indexPath0 compare:indexPath] != NSOrderedSame && indexPath0) {
@@ -220,18 +216,20 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
             for (int i = 0; i < tableCounts - 3; i++) {
                 [self removeLastItem];
             }
+            [self setButtonTitle:areaItem.name];
             [self addTopBarItem];
             [self addTableView];
-            [self scrollToNextItem:areaItem.name];
+            [self scrollToNextItem];
             return indexPath;
         } else if ([indexPath0 compare:indexPath] == NSOrderedSame && indexPath0) {
-            [self scrollToNextItem:areaItem.name];
+            [self scrollToNextItem];
             return indexPath;
         }
+        AreaModel *item = self.areaDatas[indexPath.row];
+        [self setButtonTitle:item.name];
         [self addTopBarItem];
         [self addTableView];
-        AreaModel *item = self.areaDatas[indexPath.row];
-        [self scrollToNextItem:item.name];
+        [self scrollToNextItem];
         
     } else if ([self.tableViews indexOfObject:tableView] == 3) {
         
@@ -280,19 +278,19 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
     
     NSInteger index = [self.topTabbarItems indexOfObject:btn];
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         self.contentView.contentOffset = CGPointMake(index *HYScreenW, 0);
         [self changeUnderLineFrame:btn];
     }];
 }
 //调整指示条位置
-- (void)changeUnderLineFrame:(UIButton  *)btn {
+- (void)changeUnderLineFrame:(UIButton *)btn {
     
     _selectedBtn.selected = NO;
     btn.selected = YES;
     _selectedBtn = btn;
-    _underLine.left = btn.left;
-    _underLine.width = btn.width;
+//    _underLine.left = btn.left;
+//    _underLine.width = btn.width;
 }
 //完成地址选择,执行chooseFinish代码块
 - (void)setUpAddress:(NSString *)address {
@@ -303,16 +301,7 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
     [btn sizeToFit];
     [_topTabbar layoutIfNeeded];
     [self changeUnderLineFrame:btn];
-    NSMutableString *addressStr = [[NSMutableString alloc] init];
-    for (UIButton *btn  in self.topTabbarItems) {
-        if ([btn.currentTitle isEqualToString:@"县"] || [btn.currentTitle isEqualToString:@"市辖区"] ) {
-            continue;
-        }
-        [addressStr appendString:btn.currentTitle];
-        [addressStr appendString:@" "];
-    }
-    self.address = addressStr;
-    
+    [self settingAddress];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 *NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.hidden = YES;
         if (self.chooseFinish) {
@@ -329,20 +318,34 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
     [self.topTabbarItems.lastObject performSelector:@selector(removeFromSuperview) withObject:nil withObject:nil];
     [self.topTabbarItems removeLastObject];
 }
-//滚动到下级界面,并重新设置顶部按钮条上对应按钮的title
-- (void)scrollToNextItem:(NSString *)preTitle {
-    
+- (void)setButtonTitle:(NSString *)preTitle {
     NSInteger index = self.contentView.contentOffset.x / HYScreenW;
     UIButton *btn = self.topTabbarItems[index];
     [btn setTitle:preTitle forState:UIControlStateNormal];
     [btn sizeToFit];
     [_topTabbar layoutIfNeeded];
+}
+//滚动到下级界面,并重新设置顶部按钮条上对应按钮的title
+- (void)scrollToNextItem {
+    
     [UIView animateWithDuration:0.25 animations:^{
         self.contentView.contentSize = (CGSize) {self.tableViews.count *HYScreenW,0};
         CGPoint offset = self.contentView.contentOffset;
         self.contentView.contentOffset = CGPointMake(offset.x + HYScreenW, offset.y);
-        [self changeUnderLineFrame: [self.topTabbar.subviews lastObject]];
+        [self changeUnderLineFrame: [self.topTabbar.btnArray lastObject]];
     }];
+}
+
+- (void)settingAddress {
+    NSMutableString *addressStr = [[NSMutableString alloc] init];
+    for (UIButton *btn in self.topTabbarItems) {
+        if ([btn.currentTitle isEqualToString:@"县"] || [btn.currentTitle isEqualToString:@"市辖区"] ) {
+            continue;
+        }
+        [addressStr appendString:btn.currentTitle];
+        [addressStr appendString:@" "];
+    }
+    self.address = addressStr;
 }
 
 #pragma mark - <UIScrollView>
@@ -358,61 +361,68 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
 }
 
 #pragma mark - 开始就有地址时.
-/*
-- (void)setAreaCode:(NSString *)areaCode{
+
+- (void)setAddressCode:(NSString *)addressCode {
     
-    _areaCode = areaCode;
+    _addressCode = addressCode;
     
-    NSString *provinceId = [self.areaCode substringWithRange:(NSRange) {0,2}];
-    NSString *cityId = [self.areaCode substringWithRange:(NSRange) {2,2}];
-    NSString *areaId = [self.areaCode substringWithRange:(NSRange) {4,2}];
-    NSString *streetId = [self.areaCode substringWithRange:(NSRange) {6,3}];
+    NSString *provinceId = [self.addressCode substringWithRange:NSMakeRange(0, 2)];
+    NSString *cityId = [self.addressCode substringWithRange:NSMakeRange(0, 4)];
+    NSString *areaId = [self.addressCode substringWithRange:NSMakeRange(0, 6)];
+    NSString *streetId = [self.addressCode substringWithRange:NSMakeRange(0, 9)];
     
     //2.1 添加市级别,地区级别列表
     [self addTableView];
     [self addTableView];
+    [self addTableView];
     
-    self.cityDatas = [[CitiesDataTool sharedManager] queryAllRecordWithProvinceID:provinceId];
-    self.areaDatas = [[CitiesDataTool sharedManager] queryAllRecordWithProvinceID:provinceId cityID:cityId];
-    self.streetDatas = [[CitiesDataTool sharedManager] queryAllRecordWithProvinceID:provinceId cityID:cityId areaID:areaId];
+    self.provinceDatas = [[CitiesDataTool sharedManager] queryAllProvince];
+    self.cityDatas = [[CitiesDataTool sharedManager] queryAllCitiesWithProvinceID:provinceId];
+    self.areaDatas = [[CitiesDataTool sharedManager] queryAllAreasWithProvinceID:provinceId cityID:cityId];
+    self.streetDatas = [[CitiesDataTool sharedManager] queryAllStreetsWithProvinceID:provinceId cityID:cityId areaID:areaId];
   
     //2.3 添加底部对应按钮
     [self addTopBarItem];
     [self addTopBarItem];
+    [self addTopBarItem];
     
-    NSString *code = [self.areaCode stringByReplacingCharactersInRange:(NSRange) {2,4} withString:@"0000"];
-    NSString *provinceName = [[CitiesDataTool sharedManager] queryAllRecordWithAreaCode:code];
-    UIButton *firstBtn = self.topTabbarItems.firstObject;
-    [firstBtn setTitle:provinceName forState:UIControlStateNormal];
+    ProvinceModel *province = [[CitiesDataTool sharedManager] queryProvinceWithCode:provinceId];
+    UIButton *proBtn = self.topTabbarItems.firstObject;
+    [proBtn setTitle:province.name forState:UIControlStateNormal];
     
-    NSString *cityName = [[CitiesDataTool sharedManager] queryAllRecordWithAreaCode:[self.areaCode stringByReplacingCharactersInRange:(NSRange) {4,2} withString:@"00"]];
-    UIButton *midBtn = self.topTabbarItems[1];
-    [midBtn setTitle:cityName forState:UIControlStateNormal];
+    CityModel *city = [[CitiesDataTool sharedManager] queryCityWithCode:cityId];
+    UIButton *cityBtn = self.topTabbarItems[1];
+    [cityBtn setTitle:city.name forState:UIControlStateNormal];
     
-     NSString *districtName = [[CitiesDataTool sharedManager] queryAllRecordWithAreaCode:self.areaCode];
-    UIButton *lastBtn = self.topTabbarItems.lastObject;
-    [lastBtn setTitle:districtName forState:UIControlStateNormal];
+    AreaModel *area = [[CitiesDataTool sharedManager] queryAreaWithCode:areaId];
+    UIButton *areaBtn = self.topTabbarItems[2];
+    [areaBtn setTitle:area.name forState:UIControlStateNormal];
+    
+    StreetModel *street = [[CitiesDataTool sharedManager] queryStreetWithCode:streetId];
+    UIButton *streetBtn = self.topTabbarItems.lastObject;
+    [streetBtn setTitle:street.name forState:UIControlStateNormal];
+    
     [self.topTabbarItems makeObjectsPerformSelector:@selector(sizeToFit)];
     [_topTabbar layoutIfNeeded];
     
-    
-    [self changeUnderLineFrame:lastBtn];
+    [self changeUnderLineFrame:streetBtn];
     
     //2.4 设置偏移量
-    self.contentView.contentSize = (CGSize) {self.tableViews.count *HYScreenW,0};
+    self.contentView.contentSize = CGSizeMake(self.tableViews.count * HYScreenW, 0);
     CGPoint offset = self.contentView.contentOffset;
     self.contentView.contentOffset = CGPointMake((self.tableViews.count - 1) *HYScreenW, offset.y);
-
-    [self setSelectedProvince:provinceName andCity:cityName andDistrict:districtName];
+    [self settingAddress];
+    [self setSelectedProvince:province city:city area:area street:street];
 }
 
 //初始化选中状态
-- (void)setSelectedProvince:(NSString *)provinceName andCity:(NSString *)cityName andDistrict:(NSString *)districtName {
+- (void)setSelectedProvince:(ProvinceModel *)province city:(CityModel *)city area:(AreaModel *)area street:(StreetModel *)street {
     
-    for (AddressItem *item in self.provinceDatas) {
-        if ([item.name isEqualToString:provinceName]) {
+    for (int i = 0; i < self.provinceDatas.count; i++) {
+        ProvinceModel *item = self.provinceDatas[i];
+        if ([item.name isEqualToString:province.name]) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self.provinceDatas indexOfObject:item] inSection:0];
-            UITableView *tableView  = self.tableViews.firstObject;
+            UITableView *tableView = self.tableViews.firstObject;
             [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
             [self tableView:tableView didSelectRowAtIndexPath:indexPath];
             break;
@@ -420,11 +430,10 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
     }
     
     for (int i = 0; i < self.cityDatas.count; i++) {
-        AddressItem *item = self.cityDatas[i];
-        
-        if ([item.name isEqualToString:cityName]) {
+        CityModel *item = self.cityDatas[i];
+        if ([item.name isEqualToString:city.name]) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-            UITableView *tableView  = self.tableViews[1];
+            UITableView *tableView = self.tableViews[1];
             [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
             [self tableView:tableView didSelectRowAtIndexPath:indexPath];
             break;
@@ -432,23 +441,34 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度
     }
     
     for (int i = 0; i <self.areaDatas.count; i++) {
-        AddressItem *item = self.areaDatas[i];
-        if ([item.name isEqualToString:districtName]) {
+        AreaModel *item = self.areaDatas[i];
+        if ([item.name isEqualToString:area.name]) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-            UITableView *tableView  = self.tableViews[2];
+            UITableView *tableView = self.tableViews[2];
+            [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
+            [self tableView:tableView didSelectRowAtIndexPath:indexPath];
+            break;
+        }
+    }
+    
+    for (int i = 0; i <self.streetDatas.count; i++) {
+        StreetModel *item = self.streetDatas[i];
+        if ([item.name isEqualToString:street.name]) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            UITableView *tableView = self.tableViews.lastObject;
             [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
             [self tableView:tableView didSelectRowAtIndexPath:indexPath];
             break;
         }
     }
 }
-*/
+
 #pragma mark - getter 方法
 
 //分割线
 - (UIView *)separateLine{
     
-    UIView *separateLine = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, 1 / [UIScreen mainScreen].scale)];
+    UIView *separateLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 1 / [UIScreen mainScreen].scale)];
     separateLine.backgroundColor = [UIColor colorWithRed:222/255.0 green:222/255.0 blue:222/255.0 alpha:1];
     return separateLine;
 }

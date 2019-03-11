@@ -24,9 +24,8 @@
     
     [[CitiesDataTool sharedManager] requestAllData];
     [self.view addSubview:self.cover];
-    self.chooseLocationView.address = @"广东省 广州市 越秀区";
-    self.chooseLocationView.areaCode = @"440104";
-    self.addresslabel.text = @"广东省 广州市 越秀区";
+    self.chooseLocationView.addressCode = @"110114113";
+    self.addresslabel.text = @"未选择";
 }
 
 - (IBAction)chooseAction:(UIButton *)sender {

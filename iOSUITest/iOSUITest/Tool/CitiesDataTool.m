@@ -80,9 +80,8 @@ static CitiesDataTool *shareInstance = nil;
 }
 
 - (NSString *)pathForName:(NSString *)name {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDirectory = [paths lastObject];
-    NSString *dbPath = [documentDirectory stringByAppendingPathComponent:name];
+    
+    NSString *dbPath = [[NSBundle mainBundle] pathForResource:@"location" ofType:@"db"];
     return dbPath;
 }
 
@@ -401,16 +400,34 @@ static CitiesDataTool *shareInstance = nil;
     return nil;
 }
 
+- (ProvinceModel *)queryProvinceWithCode:(NSString *)code {
+    if (code.length != 2) {
+        return nil;
+    }
+    if ([self.fmdb open]) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE `level` = '1' AND `code` = '%@'", ProvincesTableName, code];
+        FMResultSet *result = [self.fmdb  executeQuery:sql];
+        ProvinceModel *model = [[ProvinceModel alloc] init];
+        if ([result next]) {
+            model.code = [result stringForColumn:@"code"];
+            model.name = [result stringForColumn:@"name"];
+        }
+        [self.fmdb close];
+        return model;
+    }
+    return nil;
+}
+
 /**
  根据省查询市
 
  @param province 省code
  @return 市
  */
-- (NSMutableArray *)queryAllRecordWithProvinceID:(NSString *)province {
+- (NSMutableArray *)queryAllCitiesWithProvinceID:(NSString *)province {
     if ([self.fmdb open]) {
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE `provinceCode` = '%@' AND `level` = '2'"  , CitiesTableName, province];
-        FMResultSet *result = [self.fmdb  executeQuery:sql];
+        FMResultSet *result = [self.fmdb executeQuery:sql];
         NSMutableArray *array = [NSMutableArray array];
         while ([result next]) {
             CityModel *model = [[CityModel alloc] init];
@@ -425,6 +442,25 @@ static CitiesDataTool *shareInstance = nil;
     return nil;
 }
 
+- (CityModel *)queryCityWithCode:(NSString *)code {
+    if (code.length != 4) {
+        return nil;
+    }
+    if ([self.fmdb open]) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE `level` = '2' AND `code` = '%@'"  , CitiesTableName, code];
+        FMResultSet *result = [self.fmdb  executeQuery:sql];
+        CityModel *model = [[CityModel alloc] init];
+        while ([result next]) {
+            model.code = [result stringForColumn:@"code"];
+            model.name = [result stringForColumn:@"name"];
+            model.provinceCode = [result stringForColumn:@"provinceCode"];
+        }
+        [self.fmdb close];
+        return model;
+    }
+    return nil;
+}
+
 /**
  根据省\市 查询县区
 
@@ -432,7 +468,7 @@ static CitiesDataTool *shareInstance = nil;
  @param city 市
  @return 县区
  */
-- (NSMutableArray *)queryAllRecordWithProvinceID:(NSString *)province cityID:(NSString *)city {
+- (NSMutableArray *)queryAllAreasWithProvinceID:(NSString *)province cityID:(NSString *)city {
     
     if ([self.fmdb open]) {
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE `provinceCode` = %@ AND `cityCode` = %@ AND `level` = 3", AreasTableName, province, city];
@@ -452,6 +488,26 @@ static CitiesDataTool *shareInstance = nil;
     return nil;
 }
 
+- (AreaModel *)queryAreaWithCode:(NSString *)code {
+    if (code.length != 6) {
+        return nil;
+    }
+    if ([self.fmdb open]) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE `level` = '3' AND `code` = '%@'"  , AreasTableName, code];
+        FMResultSet *result = [self.fmdb  executeQuery:sql];
+        AreaModel *model = [[AreaModel alloc] init];
+        if ([result next]) {
+            model.code = [result stringForColumn:@"code"];
+            model.name = [result stringForColumn:@"name"];
+            model.cityCode = [result stringForColumn:@"cityCode"];
+            model.provinceCode = [result stringForColumn:@"provinceCode"];
+        }
+        [self.fmdb close];
+        return model;
+    }
+    return nil;
+}
+
 /**
  根据省\市\县区 查询镇
 
@@ -460,7 +516,7 @@ static CitiesDataTool *shareInstance = nil;
  @param area 区
  @return 镇
  */
-- (NSMutableArray *)queryAllRecordWithProvinceID:(NSString *)province cityID:(NSString *)city areaID:(NSString *)area {
+- (NSMutableArray *)queryAllStreetsWithProvinceID:(NSString *)province cityID:(NSString *)city areaID:(NSString *)area {
     if ([self.fmdb open]) {
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE `provinceCode` = %@ AND `cityCode` = %@ AND `areaCode` = %@ AND `level` = 4", StreetsTableName, province, city, area];
         FMResultSet *result = [self.fmdb  executeQuery:sql];
@@ -476,6 +532,27 @@ static CitiesDataTool *shareInstance = nil;
         }
         [self.fmdb close];
         return array;
+    }
+    return nil;
+}
+
+- (StreetModel *)queryStreetWithCode:(NSString *)code {
+    if (code.length != 9) {
+        return nil;
+    }
+    if ([self.fmdb open]) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE `level` = '4' AND `code` = '%@'"  , StreetsTableName, code];
+        FMResultSet *result = [self.fmdb  executeQuery:sql];
+        StreetModel *model = [[StreetModel alloc] init];
+        if ([result next]) {
+            model.code = [result stringForColumn:@"code"];
+            model.name = [result stringForColumn:@"name"];
+            model.areaCode = [result stringForColumn:@"areaCode"];
+            model.cityCode = [result stringForColumn:@"cityCode"];
+            model.provinceCode = [result stringForColumn:@"provinceCode"];
+        }
+        [self.fmdb close];
+        return model;
     }
     return nil;
 }

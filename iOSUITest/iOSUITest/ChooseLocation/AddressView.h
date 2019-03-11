@@ -10,4 +10,10 @@
 
 @interface AddressView : UIView
 
+@property (nonatomic, strong) UIScrollView *scrollView;
+
+@property (nonatomic, strong) NSMutableArray *btnArray;
+
+- (void)addButton:(UIButton *)button;
+
 @end

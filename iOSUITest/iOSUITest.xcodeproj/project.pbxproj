@@ -43,6 +43,8 @@
 		AFEB7A4521F83AB300061DAB /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = AFEB7A3821F83AB300061DAB /* MJFoundation.m */; };
 		AFEB7A4621F83AB300061DAB /* NSObject+MJClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AFEB7A3A21F83AB300061DAB /* NSObject+MJClass.m */; };
 		AFEB7A4721F83AB300061DAB /* MJPropertyType.m in Sources */ = {isa = PBXBuildFile; fileRef = AFEB7A3B21F83AB300061DAB /* MJPropertyType.m */; };
+		AFF1EC9D22364EA2005EBF48 /* AddressButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AFF1EC9C22364EA2005EBF48 /* AddressButton.m */; };
+		AFF1EC9F2236553D005EBF48 /* location.db in Resources */ = {isa = PBXBuildFile; fileRef = AFF1EC9E2236553D005EBF48 /* location.db */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +115,9 @@
 		AFEB7A3B21F83AB300061DAB /* MJPropertyType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MJPropertyType.m; path = MJ/MJPropertyType.m; sourceTree = "<group>"; };
 		AFEB7A3C21F83AB300061DAB /* MJPropertyKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MJPropertyKey.h; path = MJ/MJPropertyKey.h; sourceTree = "<group>"; };
 		AFEB7A3D21F83AB300061DAB /* MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MJProperty.h; path = MJ/MJProperty.h; sourceTree = "<group>"; };
+		AFF1EC9B22364EA2005EBF48 /* AddressButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AddressButton.h; path = ChooseLocation/AddressButton.h; sourceTree = "<group>"; };
+		AFF1EC9C22364EA2005EBF48 /* AddressButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AddressButton.m; path = ChooseLocation/AddressButton.m; sourceTree = "<group>"; };
+		AFF1EC9E2236553D005EBF48 /* location.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = location.db; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +179,7 @@
 		AFE475E221EF233100D096B9 /* iOSUITest */ = {
 			isa = PBXGroup;
 			children = (
+				AFF1EC9E2236553D005EBF48 /* location.db */,
 				AFE475E321EF233100D096B9 /* AppDelegate.h */,
 				AFE475E421EF233100D096B9 /* AppDelegate.m */,
 				AFE475E621EF233100D096B9 /* ViewController.h */,
@@ -200,6 +206,8 @@
 				AFE4760421EF240600D096B9 /* AddressTableViewCell.xib */,
 				AFE475FF21EF240500D096B9 /* AddressView.h */,
 				AFE475FB21EF240500D096B9 /* AddressView.m */,
+				AFF1EC9B22364EA2005EBF48 /* AddressButton.h */,
+				AFF1EC9C22364EA2005EBF48 /* AddressButton.m */,
 				AFE475FC21EF240500D096B9 /* ChooseLocationView.h */,
 				AFE4760021EF240500D096B9 /* ChooseLocationView.m */,
 				AFE475FD21EF240500D096B9 /* UIView+Frame.h */,
@@ -315,6 +323,7 @@
 				AF5AF45921F80F9E009B7720 /* cities.json in Resources */,
 				AFE475F021EF233200D096B9 /* LaunchScreen.storyboard in Resources */,
 				AFE475ED21EF233200D096B9 /* Assets.xcassets in Resources */,
+				AFF1EC9F2236553D005EBF48 /* location.db in Resources */,
 				AF5AF45721F80F91009B7720 /* provinces.json in Resources */,
 				AF5AF45B21F80FB6009B7720 /* areas.json in Resources */,
 				AFE4760A21EF240600D096B9 /* AddressTableViewCell.xib in Resources */,
@@ -352,6 +361,7 @@
 				AFE4761921EF241400D096B9 /* FMDatabaseAdditions.m in Sources */,
 				AFEB7A4221F83AB300061DAB /* MJExtensionConst.m in Sources */,
 				AF6A7EDC21FFF99F0074B97C /* AddressBaseModel.m in Sources */,
+				AFF1EC9D22364EA2005EBF48 /* AddressButton.m in Sources */,
 				AFE4760721EF240600D096B9 /* ChooseLocationView.m in Sources */,
 				AFEB7A4021F83AB300061DAB /* NSString+MJExtension.m in Sources */,
 				AFEB7A4321F83AB300061DAB /* NSObject+MJCoding.m in Sources */,

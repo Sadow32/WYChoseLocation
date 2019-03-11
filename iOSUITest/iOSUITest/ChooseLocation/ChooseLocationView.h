@@ -12,8 +12,8 @@
 
 @property (nonatomic, copy) NSString * address;
 
-@property (nonatomic, copy) void(^chooseFinish)();
+@property (nonatomic, copy) void(^chooseFinish)(void);
 
-@property (nonatomic,copy) NSString * areaCode;
+@property (nonatomic,copy) NSString * addressCode;
 
 @end
