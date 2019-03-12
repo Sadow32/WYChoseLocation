@@ -98,6 +98,7 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度s
 - (void)addTopBarItem {
     
     AddressButton *topBarItem = [AddressButton buttonWithType:UIButtonTypeCustom];
+    topBarItem.titleLabel.font = [UIFont systemFontOfSize:14];
     [topBarItem setTitle:@"请选择" forState:UIControlStateNormal];
     [topBarItem setTitleColor:[UIColor colorWithRed:43/255.0 green:43/255.0 blue:43/255.0 alpha:1] forState:UIControlStateNormal];
     [topBarItem setTitleColor:[UIColor orangeColor] forState:UIControlStateSelected];
@@ -234,6 +235,10 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度s
     } else if ([self.tableViews indexOfObject:tableView] == 3) {
         
         StreetModel *item = self.streetDatas[indexPath.row];
+        // 记录最终地址的code
+        _addressCode = item.code;
+        [self setButtonTitle:item.name];
+        [_topTabbar refreshAllFreame];
         [self setUpAddress:item.name];
     }
     return indexPath;
@@ -323,7 +328,6 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度s
     UIButton *btn = self.topTabbarItems[index];
     [btn setTitle:preTitle forState:UIControlStateNormal];
     [btn sizeToFit];
-    [_topTabbar layoutIfNeeded];
 }
 //滚动到下级界面,并重新设置顶部按钮条上对应按钮的title
 - (void)scrollToNextItem {
@@ -403,7 +407,7 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度s
     [streetBtn setTitle:street.name forState:UIControlStateNormal];
     
     [self.topTabbarItems makeObjectsPerformSelector:@selector(sizeToFit)];
-    [_topTabbar layoutIfNeeded];
+    [_topTabbar refreshAllFreame];
     
     [self changeUnderLineFrame:streetBtn];
     

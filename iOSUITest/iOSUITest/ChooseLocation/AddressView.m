@@ -56,7 +56,7 @@ static  CGFloat  const  HYBarItemMargin = 20;
         
         UIButton *view = self.btnArray[i];
         CGFloat width = [view.titleLabel.text
-                         boundingRectWithSize:CGSizeMake(1000, self.frame.size.height - 2) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil].size.width;
+                         boundingRectWithSize:CGSizeMake(1000, self.frame.size.height - 2) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size.width;
         if (i == 0) {
             view.left = HYBarItemMargin;
         }
@@ -67,6 +67,9 @@ static  CGFloat  const  HYBarItemMargin = 20;
         maxWidth = view.left + width + HYBarItemMargin;
     }
     _scrollView.contentSize = CGSizeMake(maxWidth, self.frame.size.height - 2);
+    if (maxWidth > self.frame.size.width) {
+        [_scrollView setContentOffset:CGPointMake(maxWidth - self.frame.size.width, 0) animated:YES];
+    }
 }
 
 - (NSMutableArray *)btnArray{

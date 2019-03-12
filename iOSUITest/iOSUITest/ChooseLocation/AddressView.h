@@ -15,5 +15,6 @@
 @property (nonatomic, strong) NSMutableArray *btnArray;
 
 - (void)addButton:(UIButton *)button;
+- (void)refreshAllFreame;
 
 @end

@@ -24,7 +24,7 @@
     
     [[CitiesDataTool sharedManager] requestAllData];
     [self.view addSubview:self.cover];
-    self.chooseLocationView.addressCode = @"110114113";
+    self.chooseLocationView.addressCode = @"654022102";
     self.addresslabel.text = @"未选择";
 }
 
