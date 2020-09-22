@@ -37,6 +37,19 @@ static  CGFloat  const  kHYTopTabbarHeight = 30; //地址标签栏的高度s
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        // 初始化默认样式
+        _title = @"所在地区";
+        _titleFont = [UIFont systemFontOfSize:17];
+        _titleColor = [UIColor blackColor];
+        _normalButtonTitleFont = [UIFont systemFontOfSize:14];
+        _selectedButtonTitleFont = [UIFont systemFontOfSize:14];
+        _normalButtonTitleColor = [UIColor blackColor];
+        _selectedButtonTitleColor = [UIColor orangeColor];
+        _normalAddressFont = [UIFont systemFontOfSize:14];
+        _selectedAddressFont = [UIFont systemFontOfSize:14];
+        _normalAddressColor = [UIColor blackColor];
+        _selectedAddressColor = [UIColor orangeColor];
+        
         [self setUp];
     }
     return self;
